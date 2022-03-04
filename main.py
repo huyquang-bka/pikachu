@@ -9,7 +9,7 @@ def check_point(x_center, y_center, rec_list):
     return False
 
 
-img = cv2.imread('1.png')
+img = cv2.imread('3.png')
 bgr_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 black_image = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -27,12 +27,13 @@ for cnt in cnts:
     perimeter = cv2.arcLength(cnt, True)
     approx = cv2.approxPolyDP(cnt, 0.018 * perimeter, True)
     if len(approx) == 4:
-        if w * h > 2000:
+        if w * h > 2500:
             continue
         if w * h < 50:
             continue
         x, y, w, h = x + extend, y + extend, w - extend * 2, h - extend * 2
         x_center, y_center = x + w // 2, y + h // 2
+        cv2.rectangle(black_image, (x, y), (x + w, y + h), (0, 0, 255), 1)
         if check_point(x_center, y_center, spot_list):
             continue
         crop = img[y:y + h, x:x + w]
@@ -52,7 +53,7 @@ for cnt in cnts:
 
 
 cv2.imshow('black_image', black_image)
-# cv2.imshow('thresh', thresh)
+cv2.imshow('thresh', thresh)
 cv2.imshow('img', img)
 # cv2.imshow('img', cv2.resize(img, (0, 0), fx=2, fy=2))
 cv2.waitKey(0)
